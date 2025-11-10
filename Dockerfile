@@ -9,21 +9,13 @@ WORKDIR $APP_HOME
 # Install PM2 globally
 RUN npm install -g pm2
 
-# Copy package.json & lock files first for caching
-#COPY ../../projects/frontend/package*.json ./
-
-# Install dependencies
-#RUN npm ci --only=production
-
-# Copy app source (or mount via docker-compose)
-#COPY ../../projects/frontend ./
+# Copy entrypoint & PM2 config
+COPY ./ecosystem.config.js ./ecosystem.config.js
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expose frontend port
 EXPOSE 3000
 
-# Copy PM2 config & entrypoint
-COPY ecosystem.config.js ./
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
+# Use entrypoint script to handle build/run logic
 ENTRYPOINT ["/entrypoint.sh"]

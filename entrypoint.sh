@@ -2,11 +2,12 @@
 set -e
 
 echo "[INFO] Starting Next.js app with PM2..."
+cd /usr/src/app
 
 # Ensure dependencies are up to date
 if [ ! -d "node_modules" ]; then
   echo "[INFO] Installing dependencies..."
-  npm ci --only=production
+  npm install
 fi
 
 # Build Next.js (if needed)
